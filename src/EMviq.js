@@ -51,7 +51,7 @@ EMVIQ.NODETYPES = {
 };
 
 EMVIQ.getIconURLbyType = (type)=>{
-    if (type === EMVIQ.NODETYPES.SERIATION) return "res/emicons/SUseries.png";
+    if (type === EMVIQ.NODETYPES.SERIATION) return "res/emicons/serSU.png";
     if (type === EMVIQ.NODETYPES.US) return "res/emicons/US.png";
     if (type === EMVIQ.NODETYPES.USVS) return "res/emicons/USVs.png";
     if (type === EMVIQ.NODETYPES.USVN) return "res/emicons/USVn.png";
@@ -63,10 +63,10 @@ EMVIQ.getIconURLbyType = (type)=>{
     if (type === EMVIQ.NODETYPES.PROPERTY) return "res/emicons/property.png";
     if (type === EMVIQ.NODETYPES.CONTINUITY) return "res/emicons/continuity.png";
 
-    if (type === EMVIQ.NODETYPES.USVSERIES) return "res/emicons/USVseries.png";
+    if (type === EMVIQ.NODETYPES.USVSERIES) return "res/emicons/serUSV.png";
     if (type === EMVIQ.NODETYPES.SPECIALFIND_VIRTUAL) return "res/emicons/VSF.png";
     if (type === EMVIQ.NODETYPES.USD) return "res/emicons/USD.png";
-    if (type === EMVIQ.NODETYPES.TSU) return "res/emicons/UTR.png";
+    if (type === EMVIQ.NODETYPES.TSU) return "res/emicons/TSU.png";
 
     return "";
 };
