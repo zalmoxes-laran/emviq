@@ -404,6 +404,7 @@ realizeProxyGraphFromJSONNode(graphnode){
                 || type === EMVIQ.NODETYPES.USVS
                 || type === EMVIQ.NODETYPES.USD
                 || type === EMVIQ.NODETYPES.TSU
+                || type === EMVIQ.NODETYPES.SERIATION
                 || type === EMVIQ.NODETYPES.USVSERIES ){
                 bProxyNode = true;
                 
