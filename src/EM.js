@@ -515,12 +515,24 @@ getSourceGraphByProxyID(id){
 buildEMgraph(graphnode){
     if (!graphnode) graphnode = this._mainGMLRoot;
 
-    //console.log(graphnode);
-    if (!graphnode.edge) return; // no edges found in GraphML
+    // Recurse into nested subgraphs (yEd swimlane / group nodes hold edges inside)
+    if (graphnode.node){
+        let nn = graphnode.node;
+        if (Array.isArray(nn)){
+            for (let i = 0; i < nn.length; i++){
+                if (nn[i] && nn[i].graph) this.buildEMgraph(nn[i].graph);
+            }
+        } else if (nn.graph){
+            this.buildEMgraph(nn.graph);
+        }
+    }
 
-    let numEdges = graphnode.edge.length;
+    if (!graphnode.edge) return; // no edges at this level
+
+    let edges = Array.isArray(graphnode.edge) ? graphnode.edge : [graphnode.edge];
+    let numEdges = edges.length;
     for (let i = 0; i < numEdges; i++){
-        let E = graphnode.edge[i];
+        let E = edges[i];
         if (E){
             let sourceID = String(this.getAttribute(E,"source"));
             let targetID = String(this.getAttribute(E,"target"));
