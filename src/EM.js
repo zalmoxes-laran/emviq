@@ -108,6 +108,20 @@ getNodeShape(node){
     //console.log(d);
 }
 
+getNodeFill(node){
+    if (!node.data) return undefined;
+    let d = this.findDataWithKey(node, EMVIQ.YED_dNodeGraphics);
+    if (!d || !d.ShapeNode || !d.ShapeNode.Fill) return undefined;
+    return this.getAttribute(d.ShapeNode.Fill, "color");
+}
+
+getNodeBorderType(node){
+    if (!node.data) return undefined;
+    let d = this.findDataWithKey(node, EMVIQ.YED_dNodeGraphics);
+    if (!d || !d.ShapeNode || !d.ShapeNode.BorderStyle) return undefined;
+    return this.getAttribute(d.ShapeNode.BorderStyle, "type");
+}
+
 getNodeFields(node){
     //console.log(node);
 
@@ -177,13 +191,25 @@ getNodeType(node){
 
         if (!s) return undefined;
 
-        // FIXME: use indexof
         let a = this.getAttribute(s, "type");
-        if (a === EMVIQ.YED_sSeriation) return EMVIQ.NODETYPES.SERIATION;
-        if (a === EMVIQ.YED_sSF)        return EMVIQ.NODETYPES.SPECIALFIND;
+
+        let fill   = d.ShapeNode.Fill ? this.getAttribute(d.ShapeNode.Fill, "color") : undefined;
+        let border = d.ShapeNode.BorderStyle ? this.getAttribute(d.ShapeNode.BorderStyle, "type") : undefined;
+        let bWhite = fill && fill.toUpperCase().startsWith("#FFFFFF");
+
         if (a === EMVIQ.YED_sUS)        return EMVIQ.NODETYPES.US;
         if (a === EMVIQ.YED_sUSVN)      return EMVIQ.NODETYPES.USVN;
         if (a === EMVIQ.YED_sUSVS)      return EMVIQ.NODETYPES.USVS;
+
+        if (a === EMVIQ.YED_sSeriation){
+            return bWhite ? EMVIQ.NODETYPES.USVSERIES : EMVIQ.NODETYPES.SERIATION;
+        }
+        if (a === EMVIQ.YED_sSF){
+            return bWhite ? EMVIQ.NODETYPES.SPECIALFIND : EMVIQ.NODETYPES.SPECIALFIND_VIRTUAL;
+        }
+        if (a === EMVIQ.YED_sUSD){
+            return (border === "dashed") ? EMVIQ.NODETYPES.TSU : EMVIQ.NODETYPES.USD;
+        }
         }
 
     // BPMN (Property or Document)
@@ -371,10 +397,14 @@ realizeProxyGraphFromJSONNode(graphnode){
             }
 
             // Single proxy
-            if (type === EMVIQ.NODETYPES.SPECIALFIND 
-                || type === EMVIQ.NODETYPES.US 
-                || type === EMVIQ.NODETYPES.USVN 
-                || type === EMVIQ.NODETYPES.USVS ){
+            if (type === EMVIQ.NODETYPES.SPECIALFIND
+                || type === EMVIQ.NODETYPES.SPECIALFIND_VIRTUAL
+                || type === EMVIQ.NODETYPES.US
+                || type === EMVIQ.NODETYPES.USVN
+                || type === EMVIQ.NODETYPES.USVS
+                || type === EMVIQ.NODETYPES.USD
+                || type === EMVIQ.NODETYPES.TSU
+                || type === EMVIQ.NODETYPES.USVSERIES ){
                 bProxyNode = true;
                 
                 if (periodName){
