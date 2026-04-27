@@ -593,15 +593,13 @@ EMVIQ.blurProxiesCurrPeriod = function(){
 };
 
 EMVIQ.getSourceGraphHTML = (emn)=>{
-    if (emn.children.lenght<1) return "";
+    if (!emn || !emn.children || emn.children.length < 1) return "";
 
     let html = "";
 
     for (let e in emn.children){
-        
-        
         let E = emn.children[e];
-       
+        if (!E) continue;
 
         // Entry title
         html += "<details class='emviqSGEntry'><summary class='emviqSNTitle'><img src='"+EMVIQ.getIconURLbyType(E.type)+"'>"+E.label+"</summary>";
@@ -610,7 +608,7 @@ EMVIQ.getSourceGraphHTML = (emn)=>{
         if (E.description) html += "<b>Description: </b>"+ E.description + "<br><br>";
         if (E.period) html += "<b>Chronology: </b>"+ E.period + "<br>";
         if (E.url) html += "<img class='emviqSGDocImg' src='"+ATON.PATH_SCENES+EMVIQ.paramSID+"/"+E.url+"'>";
-        
+
         // Recurse
         html += EMVIQ.getSourceGraphHTML(E);
         html += "</details>";
