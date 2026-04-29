@@ -467,7 +467,8 @@ realizeProxyGraphFromJSONNode(graphnode){
             }
 */
             // If accepted, push into EM nodes
-            if (type && periodName && fields.xmlID){
+            // NOTE: explicit !== undefined check because NODETYPES.SERIATION === 0 (falsy)
+            if (type !== undefined && periodName && fields.xmlID){
                 let EMkey = fields.xmlID;
 
                 this.EMnodes[EMkey] = new EMNode();
